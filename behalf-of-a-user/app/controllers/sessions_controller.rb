@@ -11,7 +11,8 @@ class SessionsController < ApplicationController
     puts(user_info)
 
     user = User.find_or_create_by!(username: user_info["login"])
-    session = Session.create(user_id: user.id, access_token: token_data["access_token"])
+    session = Session.find_or_create_by(user_id: user.id)
+    session.update(access_token: token_data["access_token"])
 
     redirect_to home_index_path, notice: 'ログインしました'
   end
