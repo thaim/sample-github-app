@@ -38,7 +38,6 @@ class SessionsController < ApplicationController
     puts access_token
     uri = URI("https://api.github.com/user")
     response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-      body = {"access_token" => access_token}.to_json
       auth = "Bearer #{access_token}"
       headers = {
         "Content-Type" => "application/json",
@@ -46,7 +45,7 @@ class SessionsController < ApplicationController
         "Authorization" => auth
       }
 
-      http.send_request("GET", uri.path, body, headers)
+      http.send_request("GET", uri.path, nil, headers)
     end
 
     parse_response(response)
